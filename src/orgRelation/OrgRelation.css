@@ -1,0 +1,32 @@
+.orgRelation-window {
+  width: 300px;
+  height: 200px;
+  border: 1px solid #000;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  user-select: none;
+}
+
+.orgRelation-header {
+  background-color: green;
+  padding: 10px;
+  color: #fff;
+  cursor: move;
+  display: flex;
+  justify-content: space-between;
+}
+
+.orgRelation-content {
+  flex: 1;
+  padding: 10px;
+  overflow: auto;
+}
+
+.orgRelation-header button {
+  background-color: green;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
