@@ -1,13 +1,13 @@
 import React from "react";
 import Draggable from "react-draggable";
-import "./OrgRelation.css";
+import "./SubOrgRelation.css";
 
-interface OrgRelationProps {
+interface SubOrgRelationProps {
   onButtonClick: (buttonName: string) => void;
   pressedButtons: string[];
 }
 
-const OrgRelation: React.FC<OrgRelationProps> = ({
+const SubOrgRelation: React.FC<SubOrgRelationProps> = ({
   onButtonClick,
   pressedButtons,
 }) => {
@@ -16,12 +16,12 @@ const OrgRelation: React.FC<OrgRelationProps> = ({
   };
 
   return (
-    <Draggable defaultPosition={{ x: -50, y: -240 }}>
-      <div className="orgRelation-window">
-        <div className="orgRelation-header">
-          <span>OrgRelation</span>
+    <Draggable defaultPosition={{ x: -450, y: -240 }}>
+      <div className="subOrgRelation-window">
+        <div className="subOrgRelation-header">
+          <span>SubOrgRelation</span>
         </div>
-        <div className="orgRelation-content">
+        <div className="subOrgRelation-content">
           <button
             onClick={() => handleButtonClick("Button 1")}
             className={pressedButtons.includes("Button 1") ? "pressed" : ""}
@@ -40,4 +40,4 @@ const OrgRelation: React.FC<OrgRelationProps> = ({
   );
 };
 
-export default OrgRelation;
+export default SubOrgRelation;

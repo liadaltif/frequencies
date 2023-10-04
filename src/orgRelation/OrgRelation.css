@@ -1,7 +1,6 @@
 .orgRelation-window {
   width: 300px;
   height: 200px;
-  border: 1px solid #000;
   background-color: white;
   display: flex;
   flex-direction: column;
@@ -22,13 +21,16 @@
   flex: 1;
   padding: 10px;
   overflow: auto;
+  display: flex;
+  flex-direction: column;
 }
 
-.orgRelation-header button {
-  background-color: green;
+.orgRelation-content button {
+  background-color: gray; 
   color: #fff;
   border: none;
   cursor: pointer;
+  margin-bottom: 10px;
 }
 
 .orgRelation-content button.pressed {

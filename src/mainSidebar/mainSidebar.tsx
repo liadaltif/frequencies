@@ -1,80 +1,148 @@
-// MainSidebar.tsx
-
 import React, { useState } from "react";
 import Draggable from "react-draggable";
 import "./MainSidebar.css";
 import OrgRelation from "../orgRelation/orgRelation";
+import SubOrgRelation from "../subOrgRelation/subOrgRelation";
+
+interface BasePopupProps {
+  onButtonClick: (buttonName: string) => void;
+  pressedButtons: string[];
+}
+
+interface ButtonInfo {
+  buttonName: string;
+  initialButtonText: string;
+  isPopupOpen: boolean;
+  pressedButtons: string[];
+  component: React.ComponentType<BasePopupProps>;
+  label: string;
+}
 
 interface MainSidebarProps {
   initialHeaderText?: string;
-  initialButtonText?: string;
+  buttons: ButtonInfo[];
 }
 
-const MainSidebar: React.FC<MainSidebarProps> = ({
+const MainSidebar = ({
   initialHeaderText = "שם גנרי למערכת",
-  initialButtonText = "hello",
-}) => {
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [pressedButtons, setPressedButtons] = useState<string[]>([]);
+  buttons,
+}: MainSidebarProps) => {
+  const [buttonStates, setButtonStates] = useState<{
+    isPopupOpen: boolean;
+    pressedButtons: string[];
+  }[]>(buttons.map(() => ({ isPopupOpen: false, pressedButtons: [] })));
 
-  const togglePopup = () => {
-    setIsPopupOpen(!isPopupOpen);
+  const togglePopup = (index: number) => {
+    setButtonStates((prevStates) =>
+      prevStates.map((state, i) =>
+        i === index ? { ...state, isPopupOpen: !state.isPopupOpen } : state
+      )
+    );
   };
 
-  const handleClosePopup = () => {
-    setIsPopupOpen(false);
+  const handleButtonClick = (index: number, buttonName: string) => {
+    setButtonStates((prevStates) =>
+      prevStates.map((state, i) =>
+        i === index
+          ? {
+              ...state,
+              pressedButtons: toggleButtonState(
+                state.pressedButtons,
+                buttonName
+              ),
+            }
+          : state
+      )
+    );
   };
 
-  const handleButtonClick = (buttonName: string) => {
-    const newPressedButtons = pressedButtons.includes(buttonName)
-      ? pressedButtons.filter((btn) => btn !== buttonName)
-      : [...pressedButtons, buttonName];
-    setPressedButtons(newPressedButtons);
-  };
-
-  const getButtonText = () => {
-    return pressedButtons.length > 0
-      ? pressedButtons.join(",")
-      : initialButtonText;
-  };
+  const toggleButtonState = (buttons: string[], buttonName: string) =>
+    buttons.includes(buttonName)
+      ? buttons.filter((btn) => btn !== buttonName)
+      : [...buttons, buttonName];
 
   return (
     <>
-      <Draggable defaultPosition={{ x: 0, y: 0 }}>
+      <Draggable defaultPosition={{ x: 500, y: -200 }}>
         <div className="main-sidebar">
           <div
             className={`green-top ${
-              pressedButtons.length > 0 ? "pressed" : ""
+              buttonStates.some(
+                (state) => state.pressedButtons.length > 0
+              )
+                ? "pressed"
+                : ""
             }`}
             contentEditable={true}
           >
             {initialHeaderText}
           </div>
           <div className="gray-bottom">
-            <label>תחום התחלה</label>
-            <input type="text" placeholder="תחום התחלה" />
-            <label>תחום סוף</label>
-            <input type="text" placeholder="תחום סוף" />
-            <button
-              className={`green-button ${
-                pressedButtons.length > 0 ? "pressed" : ""
-              }`}
-              onClick={togglePopup}
-            >
-              {getButtonText()}
-            </button>
+            {buttons.map((_button, index) => (
+              <React.Fragment key={index}>
+                <label>{index === 0 ? "תחום התחלה" : "תחום סוף"}</label>
+                <input
+                  type="text"
+                  placeholder={
+                    index === 0 ? "תחום התחלה" : "תחום סוף"
+                  }
+                />
+              </React.Fragment>
+            ))}
+            {buttons.map((button, index) => (
+              <React.Fragment key={index}>
+                <label>{button.label}</label>
+                <button
+                  className={`green-button ${
+                    buttonStates[index].pressedButtons.length > 0
+                      ? "pressed"
+                      : ""
+                  }`}
+                  onClick={() => togglePopup(index)}
+                >
+                  {buttonStates[index].pressedButtons.length > 0
+                    ? buttonStates[index].pressedButtons.join(",")
+                    : button.buttonName}
+                </button>
+              </React.Fragment>
+            ))}
           </div>
         </div>
       </Draggable>
-      {isPopupOpen && (
-        <OrgRelation
-          onClose={handleClosePopup}
-          onButtonClick={handleButtonClick}
-          pressedButtons={pressedButtons}
-        />
-      )}
+      {buttons.map((button, index) => (
+        <React.Fragment key={index}>
+          {buttonStates[index].isPopupOpen && (
+            <button.component
+              onButtonClick={(buttonName: string) =>
+                handleButtonClick(index, buttonName)
+              }
+              pressedButtons={buttonStates[index].pressedButtons}
+            />
+          )}
+        </React.Fragment>
+      ))}
     </>
   );
 };
 
-export default MainSidebar;
+const buttons: ButtonInfo[] = [
+  {
+    buttonName: "Hello1",
+    initialButtonText: "Button 1",
+    isPopupOpen: false,
+    pressedButtons: [],
+    component: OrgRelation,
+    label: "hello 1",
+  },
+  {
+    buttonName: "Hello2",
+    initialButtonText: "Button 2",
+    isPopupOpen: false,
+    pressedButtons: [],
+    component: SubOrgRelation,
+    label: "hello 2",
+  },
+  
+];
+
+export default () => <MainSidebar buttons={buttons} />;

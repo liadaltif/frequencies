@@ -1,12 +1,11 @@
 .main-sidebar {
   width: 200px;
   height: 300px;
-  border: 1px solid #000;
   display: flex;
   flex-direction: column;
   direction: rtl;
   position: absolute;
-  user-select: none; /* Prevent text selection during dragging */
+  user-select: none; 
 }
 
 .green-top {
@@ -15,7 +14,7 @@
   color: #fff;
   min-height: 50px;
   overflow: auto;
-  cursor: text;
+  cursor: move;
   text-align: right;
   outline: none;
 }
@@ -24,6 +23,13 @@
   flex: 1;
   background-color: rgba(204, 204, 204, 0.8);
   padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.gray-bottom label {
+  width: 100%;
 }
 
 .gray-bottom input {
@@ -32,3 +38,7 @@
   box-sizing: border-box;
   direction: rtl;
 }
+
+/* .green-button {
+  
+} */
