@@ -30,3 +30,8 @@
   border: none;
   cursor: pointer;
 }
+
+.orgRelation-content button.pressed {
+  background-color: green;
+  color: #fff;
+}
