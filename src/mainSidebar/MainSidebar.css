@@ -5,7 +5,7 @@
   flex-direction: column;
   direction: rtl;
   position: absolute;
-  user-select: none; 
+  user-select: none;
 }
 
 .green-top {
@@ -21,7 +21,7 @@
 
 .gray-bottom {
   flex: 1;
-  background-color: rgba(204, 204, 204, 0.8);
+  background-color: rgb(42, 46, 69, 0.9);
   padding: 10px;
   display: flex;
   flex-direction: column;

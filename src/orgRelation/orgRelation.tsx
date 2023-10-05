@@ -19,20 +19,38 @@ const OrgRelation: React.FC<OrgRelationProps> = ({
     <Draggable defaultPosition={{ x: -50, y: -240 }}>
       <div className="orgRelation-window">
         <div className="orgRelation-header">
-          <span>OrgRelation</span>
+          <span>שייכות ארגונית</span>
         </div>
         <div className="orgRelation-content">
           <button
-            onClick={() => handleButtonClick("Button 1")}
-            className={pressedButtons.includes("Button 1") ? "pressed" : ""}
+            onClick={() => handleButtonClick("ITU")}
+            className={pressedButtons.includes("ITU") ? "pressed" : ""}
           >
-            Button 1
+            ITU
           </button>
           <button
-            onClick={() => handleButtonClick("Button 2")}
-            className={pressedButtons.includes("Button 2") ? "pressed" : ""}
+            onClick={() => handleButtonClick("CPT")}
+            className={pressedButtons.includes("CPT") ? "pressed" : ""}
           >
-            Button 2
+            CPT
+          </button>
+          <button
+            onClick={() => handleButtonClick("אזרחי")}
+            className={pressedButtons.includes("אזרחי") ? "pressed" : ""}
+          >
+            אזרחי
+          </button>
+          <button
+            onClick={() => handleButtonClick('צה"ל')}
+            className={pressedButtons.includes('צה"ל') ? "pressed" : ""}
+          >
+            צה"ל
+          </button>
+          <button
+            onClick={() => handleButtonClick("משטרת ישראל")}
+            className={pressedButtons.includes("משטרת ישראל") ? "pressed" : ""}
+          >
+            משטרת ישראל
           </button>
         </div>
       </div>

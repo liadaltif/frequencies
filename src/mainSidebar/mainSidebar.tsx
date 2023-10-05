@@ -11,7 +11,7 @@ interface BasePopupProps {
 
 interface ButtonInfo {
   buttonName: string;
-  initialButtonText: string;
+  // initialButtonText: string;
   isPopupOpen: boolean;
   pressedButtons: string[];
   component: React.ComponentType<BasePopupProps>;
@@ -27,10 +27,12 @@ const MainSidebar = ({
   initialHeaderText = "שם גנרי למערכת",
   buttons,
 }: MainSidebarProps) => {
-  const [buttonStates, setButtonStates] = useState<{
-    isPopupOpen: boolean;
-    pressedButtons: string[];
-  }[]>(buttons.map(() => ({ isPopupOpen: false, pressedButtons: [] })));
+  const [buttonStates, setButtonStates] = useState<
+    {
+      isPopupOpen: boolean;
+      pressedButtons: string[];
+    }[]
+  >(buttons.map(() => ({ isPopupOpen: false, pressedButtons: [] })));
 
   const togglePopup = (index: number) => {
     setButtonStates((prevStates) =>
@@ -67,9 +69,7 @@ const MainSidebar = ({
         <div className="main-sidebar">
           <div
             className={`green-top ${
-              buttonStates.some(
-                (state) => state.pressedButtons.length > 0
-              )
+              buttonStates.some((state) => state.pressedButtons.length > 0)
                 ? "pressed"
                 : ""
             }`}
@@ -83,9 +83,7 @@ const MainSidebar = ({
                 <label>{index === 0 ? "תחום התחלה" : "תחום סוף"}</label>
                 <input
                   type="text"
-                  placeholder={
-                    index === 0 ? "תחום התחלה" : "תחום סוף"
-                  }
+                  placeholder={index === 0 ? "תחום התחלה" : "תחום סוף"}
                 />
               </React.Fragment>
             ))}
@@ -127,22 +125,21 @@ const MainSidebar = ({
 
 const buttons: ButtonInfo[] = [
   {
-    buttonName: "Hello1",
-    initialButtonText: "Button 1",
+    buttonName: "בחר",
+    // initialButtonText: "Button 1",
     isPopupOpen: false,
     pressedButtons: [],
     component: OrgRelation,
-    label: "hello 1",
+    label: "שייכות ארגונית",
   },
   {
     buttonName: "Hello2",
-    initialButtonText: "Button 2",
+    // initialButtonText: "Button 2",
     isPopupOpen: false,
     pressedButtons: [],
     component: SubOrgRelation,
     label: "hello 2",
   },
-  
 ];
 
 export default () => <MainSidebar buttons={buttons} />;
