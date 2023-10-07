@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+// MainSidebar.tsx
+
+import React, { useState, useRef } from "react";
 import Draggable from "react-draggable";
 import "./MainSidebar.css";
 import OrgRelation from "../orgRelation/orgRelation";
@@ -11,7 +13,6 @@ interface BasePopupProps {
 
 interface ButtonInfo {
   buttonName: string;
-  // initialButtonText: string;
   isPopupOpen: boolean;
   pressedButtons: string[];
   component: React.ComponentType<BasePopupProps>;
@@ -33,6 +34,13 @@ const MainSidebar = ({
       pressedButtons: string[];
     }[]
   >(buttons.map(() => ({ isPopupOpen: false, pressedButtons: [] })));
+
+  const [inputValues, setInputValues] = useState<{ [key: string]: string }>({
+    "תחום התחלה": "",
+    "תחום סוף": "",
+  });
+
+  const [editableContent, setEditableContent] = useState(initialHeaderText);
 
   const togglePopup = (index: number) => {
     setButtonStates((prevStates) =>
@@ -63,10 +71,34 @@ const MainSidebar = ({
       ? buttons.filter((btn) => btn !== buttonName)
       : [...buttons, buttonName];
 
+  const handleInputChange = (label: string, value: string) => {
+    setInputValues((prevValues) => ({ ...prevValues, [label]: value }));
+  };
+
+  const handleContentChange = (e: React.ChangeEvent<HTMLDivElement>) => {
+    setEditableContent(e.target.textContent || "");
+  };
+
+  const draggableRef = useRef(null);
+
+  const handleAdditionalButtonClick = () => {
+    const logData = {
+      ...inputValues,
+      editableContent: editableContent,
+      buttons: buttons.map((button, index) => ({
+        [button.label]: {
+          pressedButtons: buttonStates[index].pressedButtons,
+        },
+      })),
+    };
+
+    console.log("Additional Button Clicked:", logData);
+  };
+
   return (
     <>
-      <Draggable defaultPosition={{ x: 500, y: -200 }}>
-        <div className="main-sidebar">
+      <Draggable defaultPosition={{ x: 500, y: -200 }} nodeRef={draggableRef}>
+        <div ref={draggableRef} className="main-sidebar">
           <div
             className={`green-top ${
               buttonStates.some((state) => state.pressedButtons.length > 0)
@@ -74,17 +106,22 @@ const MainSidebar = ({
                 : ""
             }`}
             contentEditable={true}
-          >
-            {initialHeaderText}
-          </div>
+            onInput={handleContentChange}
+            dangerouslySetInnerHTML={{ __html: editableContent }}
+          />
           <div className="gray-bottom">
-            {buttons.map((_button, index) => (
+            {Object.entries(inputValues).map(([label, value], index) => (
               <React.Fragment key={index}>
-                <label>{index === 0 ? "תחום התחלה" : "תחום סוף"}</label>
-                <input
-                  type="text"
-                  placeholder={index === 0 ? "תחום התחלה" : "תחום סוף"}
-                />
+                <label htmlFor={label.toLowerCase()}>
+                  {label}
+                  <input
+                    type="text"
+                    placeholder={label}
+                    value={value}
+                    onChange={(e) => handleInputChange(label, e.target.value)}
+                    id={label.toLowerCase()}
+                  />
+                </label>
               </React.Fragment>
             ))}
             {buttons.map((button, index) => (
@@ -104,6 +141,11 @@ const MainSidebar = ({
                 </button>
               </React.Fragment>
             ))}
+            <div className="additional-button-container">
+              <button onClick={handleAdditionalButtonClick}>
+                Additional Button
+              </button>
+            </div>
           </div>
         </div>
       </Draggable>
@@ -126,7 +168,6 @@ const MainSidebar = ({
 const buttons: ButtonInfo[] = [
   {
     buttonName: "בחר",
-    // initialButtonText: "Button 1",
     isPopupOpen: false,
     pressedButtons: [],
     component: OrgRelation,
@@ -134,7 +175,6 @@ const buttons: ButtonInfo[] = [
   },
   {
     buttonName: "Hello2",
-    // initialButtonText: "Button 2",
     isPopupOpen: false,
     pressedButtons: [],
     component: SubOrgRelation,

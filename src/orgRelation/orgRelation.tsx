@@ -1,4 +1,6 @@
-import React from "react";
+// OrgRelation.tsx
+
+import React, { useRef } from "react";
 import Draggable from "react-draggable";
 import "./OrgRelation.css";
 
@@ -11,13 +13,15 @@ const OrgRelation: React.FC<OrgRelationProps> = ({
   onButtonClick,
   pressedButtons,
 }) => {
+  const draggableRef = useRef(null);
+
   const handleButtonClick = (buttonName: string) => {
     onButtonClick(buttonName);
   };
 
   return (
-    <Draggable defaultPosition={{ x: -50, y: -240 }}>
-      <div className="orgRelation-window">
+    <Draggable nodeRef={draggableRef} defaultPosition={{ x: -50, y: -240 }}>
+      <div ref={draggableRef} className="orgRelation-window">
         <div className="orgRelation-header">
           <span>שייכות ארגונית</span>
         </div>
