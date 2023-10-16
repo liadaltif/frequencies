@@ -107,7 +107,7 @@ const MainSidebar = ({
             }`}
             contentEditable={true}
             onInput={handleContentChange}
-            dangerouslySetInnerHTML={{ __html: editableContent }}
+            dangerouslySetInnerHTML={{ __html: initialHeaderText }}
           />
           <div className="gray-bottom">
             {Object.entries(inputValues).map(([label, value], index) => (
